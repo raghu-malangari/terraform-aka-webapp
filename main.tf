@@ -1,70 +1,71 @@
-# Create an Azure Resource Group
-resource "azurerm_resource_group" "rg" {
-  name     = "aks-rg"                  # Name of the resource group
-  location = "swedencentral"          # Azure region to deploy resources into
+# Configure an Azure Resource Group using input variables
+resource "azurerm_resource_group" "rg1" {
+  name     = var.rgname                         # Resource group name from variable
+  location = var.location                      # Azure region from variable
 }
 
-# Create the Azure Kubernetes Service (AKS) cluster
-resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "aks-cluster"                       # Name of the AKS cluster
-  location            = azurerm_resource_group.rg.location  # Region from the resource group
-  resource_group_name = azurerm_resource_group.rg.name      # Resource group for the cluster
-  dns_prefix          = "aks-cluster"                       # DNS prefix for the AKS API server
-
-  # Define the default node pool (mandatory)
-  default_node_pool {
-    name                  = "defaultpool"                   # Name of the node pool
-    vm_size               = "Standard_D2s_v3"               # Size/type of virtual machines
-    zones                 = [1, 2, 3]                        # Availability zones for resiliency
-    auto_scaling_enabled  = true                            # Enable autoscaling of nodes
-    max_count             = 1                               # Maximum number of nodes
-    min_count             = 1                               # Minimum number of nodes
-    os_disk_size_gb       = 30                              # Size of OS disk in GB
-    type                  = "VirtualMachineScaleSets"       # Node pool managed by VMSS
-  }
-
-  identity {
-    type = "SystemAssigned"                                 # Use a system-assigned managed identity
-  }
-
-  # Define the Linux profile for admin access
-  linux_profile {
-    admin_username = "azureuser"                            # Admin username for node access
-
-    ssh_key {
-      key_data = file("~/.ssh/id_rsa.pub")                  # SSH public key for secure access
-    }
-  }
-
-  # Define the network settings for the AKS cluster
-  network_profile {
-    network_plugin    = "azure"                             # Use Azure CNI for networking
-    load_balancer_sku = "standard"                          # Use standard SKU for the load balancer
-  }
+# Module to create a Service Principal used for AKS authentication and Key Vault access
+module "ServicePrincipal" {
+  source                 = "./modules/ServicePrincipal"  # Path to the custom module
+  service_principal_name = var.service_principal_name     # SP name passed as input
+  depends_on = [
+    azurerm_resource_group.rg1                          # Wait for RG to be created first
+  ]
 }
 
-# Create additional node pools for different products using a map variable
-resource "azurerm_kubernetes_cluster_node_pool" "product_nodepool" {
-  for_each              = var.node_pools                    # Iterate over the node_pools map
-
-  name                  = each.key                          # Name of the node pool
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id # Link to the main AKS cluster
-  vm_size               = each.value.vm_size                # VM size for the pool
-  os_type               = each.value.os_type                # OS type (Linux/Windows)
-  os_disk_size_gb       = each.value.os_disk_size_gb        # OS disk size in GB
-  node_count            = each.value.node_count             # Initial number of nodes
-  auto_scaling_enabled  = true                              # Always enable autoscaling
-  min_count             = each.value.min_count              # Minimum number of nodes
-  max_count             = each.value.max_count              # Maximum number of nodes
-  max_pods              = each.value.max_pods               # Maximum number of pods per node
-  zones                 = each.value.zones                  # Availability zones
-  mode                  = each.value.mode                   # Node pool mode (System/User)
-
-  node_labels           = each.value.node_labels            # Custom labels for nodes
-  tags                  = each.value.tags                   # Resource tags for the node pool
-
-  orchestrator_version  = var.kubernetes_version            # Kubernetes version for the node pool
-
-  depends_on = [azurerm_kubernetes_cluster.aks]             # Ensure the cluster is created before node pools
+# Assign Contributor role to the Service Principal over the subscription scope
+resource "azurerm_role_assignment" "rolespn" {
+  scope                = "/subscriptions/550ea751-3a3c-4a25-8773-93d9ec783ca5"  # Full subscription scope
+  role_definition_name = "Contributor"                                           # Assign Contributor access
+  principal_id         = module.ServicePrincipal.service_principal_object_id     # SP Object ID from module
+  depends_on = [
+    module.ServicePrincipal                                 # Ensure SP is created first
+  ]
 }
 
+# Module to provision an Azure Key Vault and grant access to the SP
+module "keyvault" {
+  source                      = "./modules/keyvault"              # Path to the Key Vault module
+  keyvault_name               = var.keyvault_name                 # Key Vault name from variable
+  location                    = var.location                      # Location from variable
+  resource_group_name         = var.rgname                        # Use same RG
+  service_principal_name      = var.service_principal_name        # SP name
+  service_principal_object_id = module.ServicePrincipal.service_principal_object_id  # SP Object ID
+  service_principal_tenant_id = module.ServicePrincipal.service_principal_tenant_id  # SP Tenant ID
+
+  depends_on = [
+    module.ServicePrincipal                                     # Ensure SP is created first
+  ]
+}
+
+# Store the SP client secret as a secret in the Key Vault
+resource "azurerm_key_vault_secret" "example" {
+  name         = module.ServicePrincipal.client_id              # Use SP client ID as secret name
+  value        = module.ServicePrincipal.client_secret          # Store the SP client secret
+  key_vault_id = module.keyvault.keyvault_id                    # Target Key Vault from module
+
+  depends_on = [
+    module.keyvault                                           # Wait for Key Vault to be ready
+  ]
+}
+
+# Module to create the Azure Kubernetes Service cluster
+module "aks" {
+  source                 = "./modules/aks/"                        # AKS module path
+  service_principal_name = var.service_principal_name            # SP name
+  client_id              = module.ServicePrincipal.client_id     # SP client ID
+  client_secret          = module.ServicePrincipal.client_secret # SP client secret
+  location               = var.location                          # Azure region
+  resource_group_name    = var.rgname                            # RG to deploy AKS in
+
+  depends_on = [
+    module.ServicePrincipal                                     # Ensure SP exists first
+  ]
+}
+
+# Output the AKS kubeconfig to a local file for access
+resource "local_file" "kubeconfig" {
+  depends_on = [module.aks]                      # Ensure AKS is ready
+  filename   = "./kubeconfig"                   # Output file path
+  content    = module.aks.config                 # Config output from AKS module
+}
