@@ -1,0 +1,1191 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2025-05-28T22:23:46Z"
+    generateName: webapp-85cf6bff66-
+    labels:
+      app: webapp
+      pod-template-hash: 85cf6bff66
+    name: webapp-85cf6bff66-2bjc4
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: webapp-85cf6bff66
+      uid: 2165d85d-b4e5-4f7f-828b-9d5afcc0b0fe
+    resourceVersion: "143582"
+    uid: 9b852a29-9336-4431-8c12-2fc75eaddb0c
+  spec:
+    automountServiceAccountToken: true
+    containers:
+    - image: nginx:latest
+      imagePullPolicy: Always
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /
+          port: 80
+          scheme: HTTP
+        initialDelaySeconds: 15
+        periodSeconds: 20
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: webapp
+      ports:
+      - containerPort: 80
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /
+          port: 80
+          scheme: HTTP
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 300m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /usr/share/nginx/html/index.html
+        mountPropagation: None
+        name: index-html
+        readOnly: true
+        subPath: index.html
+      - mountPath: /var/cache/nginx
+        mountPropagation: None
+        name: nginx-cache
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-9j2pv
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: aks-defaultpool-11393223-vmss000000
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      runAsNonRoot: false
+    serviceAccount: default
+    serviceAccountName: default
+    shareProcessNamespace: false
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: nginx-index
+        optional: false
+      name: index-html
+    - emptyDir: {}
+      name: nginx-cache
+    - name: kube-api-access-9j2pv
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-28T22:23:48Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-28T22:23:46Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-28T22:23:56Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-28T22:23:56Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-28T22:23:46Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://c0d3f41666e3151e74f37b3082193f9daacbd8d309ec538e45a28724c34dc109
+      image: docker.io/library/nginx:latest
+      imageID: docker.io/library/nginx@sha256:fb39280b7b9eba5727c884a3c7810002e69e8f961cc373b89c92f14961d903a0
+      lastState: {}
+      name: webapp
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-05-28T22:23:47Z"
+      volumeMounts:
+      - mountPath: /usr/share/nginx/html/index.html
+        name: index-html
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/cache/nginx
+        name: nginx-cache
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-9j2pv
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.224.0.4
+    hostIPs:
+    - ip: 10.224.0.4
+    phase: Running
+    podIP: 10.224.0.23
+    podIPs:
+    - ip: 10.224.0.23
+    qosClass: Burstable
+    startTime: "2025-05-28T22:23:46Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2025-05-28T22:23:35Z"
+    generateName: webapp-85cf6bff66-
+    labels:
+      app: webapp
+      pod-template-hash: 85cf6bff66
+    name: webapp-85cf6bff66-7nkhk
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: webapp-85cf6bff66
+      uid: 2165d85d-b4e5-4f7f-828b-9d5afcc0b0fe
+    resourceVersion: "143496"
+    uid: 541d17b4-7627-4fc5-b866-a98daf1f5a00
+  spec:
+    automountServiceAccountToken: true
+    containers:
+    - image: nginx:latest
+      imagePullPolicy: Always
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /
+          port: 80
+          scheme: HTTP
+        initialDelaySeconds: 15
+        periodSeconds: 20
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: webapp
+      ports:
+      - containerPort: 80
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /
+          port: 80
+          scheme: HTTP
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 300m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /usr/share/nginx/html/index.html
+        mountPropagation: None
+        name: index-html
+        readOnly: true
+        subPath: index.html
+      - mountPath: /var/cache/nginx
+        mountPropagation: None
+        name: nginx-cache
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-qhtd9
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: aks-appnodepool-39503901-vmss000000
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      runAsNonRoot: false
+    serviceAccount: default
+    serviceAccountName: default
+    shareProcessNamespace: false
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: nginx-index
+        optional: false
+      name: index-html
+    - emptyDir: {}
+      name: nginx-cache
+    - name: kube-api-access-qhtd9
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-28T22:23:38Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-28T22:23:35Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-28T22:23:46Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-28T22:23:46Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-28T22:23:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://68b11de739a176a7b84cda003dfd4e553357d25b628564849cb93cbfa954f3e4
+      image: docker.io/library/nginx:latest
+      imageID: docker.io/library/nginx@sha256:fb39280b7b9eba5727c884a3c7810002e69e8f961cc373b89c92f14961d903a0
+      lastState: {}
+      name: webapp
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-05-28T22:23:37Z"
+      volumeMounts:
+      - mountPath: /usr/share/nginx/html/index.html
+        name: index-html
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/cache/nginx
+        name: nginx-cache
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-qhtd9
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.224.0.33
+    hostIPs:
+    - ip: 10.224.0.33
+    phase: Running
+    podIP: 10.224.0.34
+    podIPs:
+    - ip: 10.224.0.34
+    qosClass: Burstable
+    startTime: "2025-05-28T22:23:35Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-05-28T13:44:38Z"
+    labels:
+      component: apiserver
+      provider: kubernetes
+    name: kubernetes
+    namespace: default
+    resourceVersion: "227"
+    uid: 7ca3e76e-6199-4340-ad49-458778d02e18
+  spec:
+    clusterIP: 10.0.0.1
+    clusterIPs:
+    - 10.0.0.1
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 443
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-05-28T19:14:53Z"
+    finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+    name: webapp-service
+    namespace: default
+    resourceVersion: "91572"
+    uid: b1484480-09e6-4092-a041-cb4f884221b1
+  spec:
+    allocateLoadBalancerNodePorts: true
+    clusterIP: 10.0.41.226
+    clusterIPs:
+    - 10.0.41.226
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 30787
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: webapp
+    sessionAffinity: None
+    type: LoadBalancer
+  status:
+    loadBalancer:
+      ingress:
+      - ip: 4.225.118.241
+        ipMode: VIP
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "8"
+    creationTimestamp: "2025-05-28T17:33:45Z"
+    generation: 10
+    labels:
+      app: webapp
+    name: webapp
+    namespace: default
+    resourceVersion: "143596"
+    uid: c764f0f4-d0aa-4269-b4dc-aedf2b2b4741
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: webapp
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: webapp
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - image: nginx:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: webapp
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html/index.html
+            mountPropagation: None
+            name: index-html
+            readOnly: true
+            subPath: index.html
+          - mountPath: /var/cache/nginx
+            mountPropagation: None
+            name: nginx-cache
+        dnsPolicy: ClusterFirst
+        enableServiceLinks: true
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsNonRoot: false
+        shareProcessNamespace: false
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: nginx-index
+            optional: false
+          name: index-html
+        - emptyDir: {}
+          name: nginx-cache
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2025-05-28T21:10:41Z"
+      lastUpdateTime: "2025-05-28T21:10:41Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-05-28T22:23:35Z"
+      lastUpdateTime: "2025-05-28T22:23:56Z"
+      message: ReplicaSet "webapp-85cf6bff66" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 10
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "3"
+    creationTimestamp: "2025-05-28T18:26:52Z"
+    generation: 3
+    labels:
+      app: webapp
+      pod-template-hash: 57b7d6cc98
+    name: webapp-57b7d6cc98
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: webapp
+      uid: c764f0f4-d0aa-4269-b4dc-aedf2b2b4741
+    resourceVersion: "91510"
+    uid: f0106520-da36-44da-bac7-072c7ff6e158
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: webapp
+        pod-template-hash: 57b7d6cc98
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: webapp
+          pod-template-hash: 57b7d6cc98
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - image: bitnami/nginx:latest
+          imagePullPolicy: Always
+          name: webapp
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        enableServiceLinks: true
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        shareProcessNamespace: false
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 3
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "4"
+    creationTimestamp: "2025-05-28T19:14:50Z"
+    generation: 2
+    labels:
+      app: webapp
+      pod-template-hash: 5d4557c848
+    name: webapp-5d4557c848
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: webapp
+      uid: c764f0f4-d0aa-4269-b4dc-aedf2b2b4741
+    resourceVersion: "93819"
+    uid: 2b8757c0-f44d-4389-96c4-72f74bc6f766
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: webapp
+        pod-template-hash: 5d4557c848
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: webapp
+          pod-template-hash: 5d4557c848
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - image: bitnami/nginx:latest
+          imagePullPolicy: Always
+          name: webapp
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /app/index.html
+            mountPropagation: None
+            name: html
+            subPath: index.html
+        dnsPolicy: ClusterFirst
+        enableServiceLinks: true
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        shareProcessNamespace: false
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: web-content
+            optional: false
+          name: html
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "3"
+      deployment.kubernetes.io/max-replicas: "4"
+      deployment.kubernetes.io/revision: "6"
+    creationTimestamp: "2025-05-28T21:10:38Z"
+    generation: 2
+    labels:
+      app: webapp
+      pod-template-hash: 6584d68666
+    name: webapp-6584d68666
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: webapp
+      uid: c764f0f4-d0aa-4269-b4dc-aedf2b2b4741
+    resourceVersion: "133153"
+    uid: 64f02918-5640-43df-a832-7aa12b9b95f8
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: webapp
+        pod-template-hash: 6584d68666
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: webapp
+          pod-template-hash: 6584d68666
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - image: nginx:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: webapp
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html/index.html
+            mountPropagation: None
+            name: index-html
+            readOnly: true
+            subPath: index.html
+        dnsPolicy: ClusterFirst
+        enableServiceLinks: true
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+        shareProcessNamespace: false
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: nginx-index
+            optional: false
+          name: index-html
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2025-05-28T17:33:45Z"
+    generation: 3
+    labels:
+      app: webapp
+      pod-template-hash: 65db6d885c
+    name: webapp-65db6d885c
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: webapp
+      uid: c764f0f4-d0aa-4269-b4dc-aedf2b2b4741
+    resourceVersion: "78335"
+    uid: 4afa1a03-3a02-4a22-bf13-7d2d3716b8e7
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: webapp
+        pod-template-hash: 65db6d885c
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: webapp
+          pod-template-hash: 65db6d885c
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - image: nginx:latest
+          imagePullPolicy: Always
+          name: webapp
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        enableServiceLinks: true
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        shareProcessNamespace: false
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 3
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "7"
+    creationTimestamp: "2025-05-28T21:46:19Z"
+    generation: 3
+    labels:
+      app: webapp
+      pod-template-hash: 6d877f9447
+    name: webapp-6d877f9447
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: webapp
+      uid: c764f0f4-d0aa-4269-b4dc-aedf2b2b4741
+    resourceVersion: "143431"
+    uid: b6b98f62-fdca-4a16-a48f-b46615934da2
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: webapp
+        pod-template-hash: 6d877f9447
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: webapp
+          pod-template-hash: 6d877f9447
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - image: nginx:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: webapp
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html/index.html
+            mountPropagation: None
+            name: index-html
+            readOnly: true
+            subPath: index.html
+          - mountPath: /var/cache/nginx
+            mountPropagation: None
+            name: nginx-cache
+        dnsPolicy: ClusterFirst
+        enableServiceLinks: true
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+        shareProcessNamespace: false
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: nginx-index
+            optional: false
+          name: index-html
+        - emptyDir: {}
+          name: nginx-cache
+  status:
+    observedGeneration: 3
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "5"
+    creationTimestamp: "2025-05-28T19:22:59Z"
+    generation: 5
+    labels:
+      app: webapp
+      pod-template-hash: 7f67bb688d
+    name: webapp-7f67bb688d
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: webapp
+      uid: c764f0f4-d0aa-4269-b4dc-aedf2b2b4741
+    resourceVersion: "143595"
+    uid: aafe7270-4b68-45e0-907f-3c274639f0e4
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: webapp
+        pod-template-hash: 7f67bb688d
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: webapp
+          pod-template-hash: 7f67bb688d
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - image: nginx:latest
+          imagePullPolicy: Always
+          name: webapp
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html/index.html
+            mountPropagation: None
+            name: index-html
+            subPath: index.html
+        dnsPolicy: ClusterFirst
+        enableServiceLinks: true
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        shareProcessNamespace: false
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: nginx-index
+            optional: false
+          name: index-html
+  status:
+    observedGeneration: 5
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "8"
+    creationTimestamp: "2025-05-28T22:23:35Z"
+    generation: 3
+    labels:
+      app: webapp
+      pod-template-hash: 85cf6bff66
+    name: webapp-85cf6bff66
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: webapp
+      uid: c764f0f4-d0aa-4269-b4dc-aedf2b2b4741
+    resourceVersion: "143585"
+    uid: 2165d85d-b4e5-4f7f-828b-9d5afcc0b0fe
+  spec:
+    replicas: 2
+    selector:
+      matchLabels:
+        app: webapp
+        pod-template-hash: 85cf6bff66
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: webapp
+          pod-template-hash: 85cf6bff66
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - image: nginx:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: webapp
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html/index.html
+            mountPropagation: None
+            name: index-html
+            readOnly: true
+            subPath: index.html
+          - mountPath: /var/cache/nginx
+            mountPropagation: None
+            name: nginx-cache
+        dnsPolicy: ClusterFirst
+        enableServiceLinks: true
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsNonRoot: false
+        shareProcessNamespace: false
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: nginx-index
+            optional: false
+          name: index-html
+        - emptyDir: {}
+          name: nginx-cache
+  status:
+    availableReplicas: 2
+    fullyLabeledReplicas: 2
+    observedGeneration: 3
+    readyReplicas: 2
+    replicas: 2
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2025-05-28T18:15:02Z"
+    generation: 2
+    labels:
+      app: webapp
+      pod-template-hash: 86b546df48
+    name: webapp-86b546df48
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: webapp
+      uid: c764f0f4-d0aa-4269-b4dc-aedf2b2b4741
+    resourceVersion: "78402"
+    uid: 4382459b-b5b1-4f54-bcb9-6e3ba94c514f
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: webapp
+        pod-template-hash: 86b546df48
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: webapp
+          pod-template-hash: 86b546df48
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - image: nginx:latest
+          imagePullPolicy: Always
+          name: webapp
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 0
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        enableServiceLinks: true
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        shareProcessNamespace: false
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+kind: List
+metadata:
+  resourceVersion: ""
